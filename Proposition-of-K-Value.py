@@ -1,7 +1,26 @@
-#read training set
-#10-fold cv
-#calcular prototipos (CNN?)
-#para cada x/prototipo no training set, veja o melhor valor de k e associe a ele
+###############################################################
+
+## UNIVERSIDADE FEDERAL DE PERNAMBUCO
+## Aprendizagem de Máquina - 2017.1
+## Aluno: Lucas de Souza Albuquerque
+
+###############################################################
+
+## A Proposal for Local k Values for k-Nearest Neighbor Rule
+
+## Autores:
+## Nicolás García-Pedrajas
+## Juan A. Romero del Castillo
+## Gonzalo Cerruela-García
+
+###############################################################
+
+## SUMÁRIO ##
+## Pesquise a [TAG] para pular diretamente para uma parte do código
+
+###############################################################
+
+#[IMPR]
 
 ##ORIGINAL IMPORT FOR REGULAR K-NN
 import csv
@@ -9,12 +28,18 @@ import random
 import math
 import operator
 
+#CITE DATASETS
+
+#[LOAD]
+
 ##LOAD(filename) - Receives a filename and reads the corresponding datafile.
 def load(filename):
     file  = open(filename, "rt", encoding="utf8")
     fileContent = csv.reader(file)
     dataset = list(fileContent)
     return dataset
+
+#[SPLT]
 
 ##SPLIT(using this initially)
 def split(dataset, ratio):
@@ -27,6 +52,23 @@ def split(dataset, ratio):
         if(random.random() >= ratio): testSet.append(dataset[i])
         else: trainingSet.append(dataset[i])
 
+#[SPLS]
+
+def splitShuffle(dataset, crossover):
+    global classCol, idCol
+
+    for i in range(0, len(dataset)):
+        for j in range(0, len(dataset[i])):
+            if(j != classCol) and (j != idCol):
+                dataset[i][j] = float(dataset[i][j])
+    random.shuffle(dataset)
+    splitPoint = math.floor(crossover*len(dataset))
+    trainingSet = dataset[:splitPoint]
+    testSet = dataset[splitPoint:]
+    return trainingSet, testSet
+
+#[ECLD]
+
 ##EUCLID DISTANCE (gets the distance between two instances ignoring the necessary columns)
 def euclidDist(instanceA, instanceB):
     global classCol, idCol
@@ -37,6 +79,8 @@ def euclidDist(instanceA, instanceB):
 
     return math.sqrt(result)
 
+#[KNN]
+
 def knn(trainingSet, testSet, k):
     result = []
     for i in range(0, len(testSet)):
@@ -45,17 +89,21 @@ def knn(trainingSet, testSet, k):
         result.append(knnClass)
     return result
 
+#[NBO]
+
 def neighborino(trainingSet, testInst, k):
 
     distanceList = []
     for i in range(0, len(trainingSet)):
-        currDistance = euclidDist(testInst, trainingSet[i])
-        distanceList.append((trainingSet[i], currDistance))
+        currDistance = euclidDist(testInst, trainingSet[i][:])
+        distanceList.append((trainingSet[i][:], currDistance))
     distanceList.sort(key=operator.itemgetter(1))
     result = []
     for i in range(0, k):
-        result.append(distanceList[i])
+        result.append(distanceList[i][:])
     return result
+
+#[DEC]
 
 def decision(knn):
     global weight, classCol
@@ -87,6 +135,8 @@ def decision(knn):
                 result = knnClass
     return result
 
+#[BMU]
+
 def getBMU(dataset, testInst, num):
     ##Inits values
     result = []
@@ -100,6 +150,8 @@ def getBMU(dataset, testInst, num):
     for d in range(0, num):
         result.append(distList[d])
     return result
+
+#[CNN]
 
 def cnn(trainingSet):
     global classCol
@@ -117,6 +169,8 @@ def cnn(trainingSet):
                 result.append(inst)
     return result
 
+#[ACC]
+
 ##SUCCESSRATE (currently without 10-fold, calculates success rate)
 def successRate(testSet, knnSet):
     global classCol
@@ -126,6 +180,8 @@ def successRate(testSet, knnSet):
             result +=1
     result = result/float(len(testSet))*100
     return result
+
+#[NORM]
 
 def normalize(dataset):
     global classCol, idCol
@@ -139,6 +195,8 @@ def normalize(dataset):
             for y in dataset:
                 y[x] = (float(y[x]) - minval)/(maxval - minval)
     return dataset
+
+#[CVG]
     
 ##CURR WITHOUT 10-CV (NEED TO ADD)
 def genFolds(dataset, kfold):
@@ -159,6 +217,8 @@ def genFolds(dataset, kfold):
     ##input()
     return sets
 
+#[CVE]
+
 def execFolds(folds, kfold, kMin, kMax):
     listVals = []
     for k in range(kMin, (kMax+1)):
@@ -174,13 +234,17 @@ def execFolds(folds, kfold, kMin, kMax):
         ##print(listVals)
         ##input()
     for k in range(kMin, (kMax+1)):
-        listVals[(k-kMin)][1] /= ((kMax+1)-kMin)
+        listVals[(k-kMin)][1] /= kfold
     ##print(listVals)
     ##input()
     return listVals
 
+#[PRINT]
+
 def printResults(trainingSet, testSet, k):
     print("Success Rate for %d Neighbors: %.4f" %(k,successRate(testSet, knn(trainingSet, testSet, k))))
+
+#[BASE]
 
 def loop(trainingSet, testSet, kMin, kMax):
     listVals = []
@@ -188,6 +252,44 @@ def loop(trainingSet, testSet, kMin, kMax):
         currVal = successRate(testSet, knn(trainingSet, testSet, k))
         listVals.append([k, currVal])
     return listVals
+
+#[LKTR] - LOCAL-KNN (TRAINING) - BETTER VERSION
+
+def betLocalF(prototypes, testSet, kMin, kMax):
+    thisTest = testSet[:]
+    thisProt = prototypes[:]
+    testProt = []
+    retProt = []
+    
+    for inst in thisTest:
+        bmus = neighborino(thisProt, inst, 3)
+        testProt.append([bmus[0][0],bmus[1][0],bmus[2][0]])
+
+    for prot in thisProt:
+        protSet = []
+        for i in range(0, len(testProt)):
+            if(prot == testProt[i][0] or
+               prot == testProt[i][1] or
+               prot == testProt[i][2]):
+                protSet.append(thisTest[i][:])
+
+        if(protSet != []):
+            maxScore = 0
+            maxK = 0
+            for k in range(kMin, (kMax+1)):
+                currVal = successRate(protSet, knn(thisProt, protSet, k))
+                currPos = k-kMin
+                currVal += cvGlobalK[currPos][1]
+                if(currVal > maxScore):
+                    maxScore = currVal
+                    maxK = k
+            prot2 = prot[:]
+            prot2.append(maxK)
+            retProt.append(prot2[:])
+
+    return retProt
+
+#[LKTR] - LOCAL-KNN (TRAINING)
     
 def localF(prototypes, testSet, kMin, kMax):
 
@@ -209,6 +311,8 @@ def localF(prototypes, testSet, kMin, kMax):
         prototype.append(listVals[0][0])
     return prototypes
 
+#[LKTE] - LOCAL-KNN (TEST)
+
 def knnlocal(prototypes, testSet):
     result = []
     for inst in testSet:
@@ -228,38 +332,62 @@ def knnlocal(prototypes, testSet):
 #classCol = (int(input("What column of your dataset contains the expected result? >> ")) - 1)
 #idCol = (int(input("Type the identification column, if any (-999 if none) >> ")) - 1)
 
-filename = "seeds.csv"
-weight = local = "y"
-classCol = 7
-idCol = -999
+#[MAIN]
 
-trainingSet = []
-testSet = []
-dataset = load(filename)
-datasetNorm = normalize(dataset)
-split(datasetNorm, 0.67)
-##prototypes = cnn(trainingSet)
-prototypes = cnn(datasetNorm)
-folds = genFolds(datasetNorm, 10)
+for abc in range(0,5):
+    print("ROUND",abc)
+    filename = "seeds.csv"
+    weight = local = "y"
+    classCol = 7
+    idCol = -999
 
-#prototypes = rnn(prototypes, trainingSet)
-#print(prototypes)
+    trainingSet = []
+    testSet = []
+    dataset = load(filename)
+    datasetNorm = normalize(dataset[:])
+    trainingSet, testSet = splitShuffle(datasetNorm[:], 0.67)
+    #split(datasetNorm, 0.67)
+    prototypes = cnn(trainingSet[:])
+    ##prototypes = cnn(datasetNorm)
+    folds = genFolds(datasetNorm[:], 10)
 
-cvGlobalK = execFolds(folds,10,1,10)
-regularKnn = loop(trainingSet,testSet,1,10)
-protKnn = loop(prototypes,testSet,1,10)
+    #prototypes = rnn(prototypes, trainingSet)
+    #print(prototypes)
 
-oldProts = localF(prototypes,testSet,1,10)
-newProts = localF(trainingSet,testSet,1,10)
-rate1 = knnlocal(oldProts, testSet)
-rate2 = knnlocal(newProts, testSet)
+    cvGlobalK = execFolds(folds[:],10,1,10)
+    regularKnn = loop(trainingSet[:],testSet[:],1,10)
+    protKnn = loop(prototypes[:],testSet[:],1,10)
 
-cvGlobalK.sort(key=operator.itemgetter(1))
-regularKnn.sort(key=operator.itemgetter(1))
-protKnn.sort(key=operator.itemgetter(1))
-print("cvGlobalK (10-fold)", cvGlobalK[0])
-##print("regularKnn", regularKnn[0])
-##print("prototypeKnn (cnn, globalK)", protKnn[0])
-print("localKnn + cnnProts = ", rate1)
-print("localKnn + fullTrainingSet = ", rate2)
+    oldProts = betLocalF(prototypes[:],testSet[:],1,10)
+    newProts = betLocalF(trainingSet[:],testSet[:],1,10)
+    rate1 = knnlocal(oldProts[:], testSet[:])
+    rate2 = knnlocal(newProts[:], testSet[:])
+
+    cvGlobalK.sort(key=operator.itemgetter(1))
+    regularKnn.sort(key=operator.itemgetter(1))
+    protKnn.sort(key=operator.itemgetter(1))
+    print("cvGlobalK (10-fold)", cvGlobalK[0])
+    print("regularKnn", regularKnn[0])
+    print("prototypeKnn (cnn, globalK)", protKnn[0])
+    print("localKnn + cnnProts = ", rate1)
+    print("localKnn + fullTrainingSet = ", rate2)
+    print("")
+print("###")
+
+
+
+
+#Modificar LocalK (criação de sets) - PRIORIDADE PRA VENTOLOCIDADE
+    #CHECK
+#Cuidar de problemas de referência
+    #ACHOQCHECKHU3
+#Outros modos de prototipagem?
+    #PROX PRIORIDADE
+#Outros modos de split/cross-validation?
+    #ACHO NÃO NECESSÁRIO
+#Outros modos de comparação? (curva Roc/cohen/wilcoxon)
+    #SEGUINDO O ARQUIVO
+#Outros KNN básicos?
+    #SEGUINDO O ARQUIVO
+#COMB THROUGH EVERYTHING AND HIGHLIGHT ARTICLE PERFORMANCE
 
