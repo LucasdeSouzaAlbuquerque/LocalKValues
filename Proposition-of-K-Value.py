@@ -462,10 +462,11 @@ for round in range(0,5):
     print("ROUND",round)
 
     ## Informações do dataset
-    filename = "ecoli.csv"
+    filename = "iris.csv"
+    print(filename)
     weight = local = "y"
-    classCol = 8
-    idCol = 0
+    classCol = 4
+    idCol = -999
 
     ## Carrega o banco de dados e normaliza.
     trainingSet = []
@@ -526,6 +527,4 @@ print("###")
 ###############################################################
 
 # RELATÓRIO
-### DIAGRAMA DE ALGORITMO
-### TABELA DE DATASETS
 ### RESULTADOS

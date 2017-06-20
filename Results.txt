@@ -1,0 +1,724 @@
+DATASET RESULTS
+----------------
+>> IONOSPHERE <<
+
+ROUND 0
+cvGlobalK (10-fold) [9, 84.18860877684408]
+regularKnn [6, 85.34482758620689]
+prototypeKnn (cnn, globalK) [9, 75.0]
+localKnn + cnnProts =  88.79310344827587 # AVG K Value: 2
+localKnn + fullTrainingSet =  93.10344827586206 # AVG K Value: 1
+
+K pdtKNN: 0.6440433212996389
+K pdtPROT: 0.4626198083067093
+K sdtPROT: 0.7346938775510206
+K sdtKNN: 0.8417462482946794
+
+######
+
+ROUND 1
+cvGlobalK (10-fold) [10, 84.3052738336714]
+regularKnn [3, 81.03448275862068]
+prototypeKnn (cnn, globalK) [5, 77.58620689655173]
+localKnn + cnnProts =  92.24137931034483 # AVG K Value: 4
+localKnn + fullTrainingSet =  87.93103448275862 # AVG K Value: 1
+
+K pdtKNN: 0.5552457302195886
+K pdtPROT: 0.4573587621446563
+K sdtPROT: 0.8262316910785619
+K sdtKNN: 0.7227722772277227
+
+######
+
+ROUND 2
+cvGlobalK (10-fold) [9, 83.96729390681003]
+regularKnn [7, 82.75862068965517]
+prototypeKnn (cnn, globalK) [9, 78.44827586206897]
+localKnn + cnnProts =  89.65517241379311 # AVG K Value: 1
+localKnn + fullTrainingSet =  88.79310344827587 # AVG K Value: 1
+
+K pdtKNN: 0.5784883720930232
+K pdtPROT: 0.455296769346356
+K sdtPROT: 0.7596685082872928
+K sdtKNN: 0.738012508686588
+
+######
+
+ROUND 3
+cvGlobalK (10-fold) [8, 83.88620448179272]
+regularKnn [9, 82.75862068965517]
+prototypeKnn (cnn, globalK) [4, 77.58620689655173]
+localKnn + cnnProts =  86.20689655172413 # AVG K Value: 1
+localKnn + fullTrainingSet =  89.65517241379311 # AVG K Value: 1
+
+K pdtKNN: 0.5810762007945106
+K pdtPROT: 0.4272692745917205
+K sdtPROT: 0.6689261505529788
+K sdtKNN: 0.7604130808950087
+
+######
+
+ROUND 4
+cvGlobalK (10-fold) [10, 83.5400549271517]
+regularKnn [7, 84.48275862068965]
+prototypeKnn (cnn, globalK) [9, 80.17241379310344]
+localKnn + cnnProts =  93.10344827586206 # AVG K Value: 4
+localKnn + fullTrainingSet =  92.24137931034483 # AVG K Value: 1
+
+K pdtKNN: 0.6380027739251041
+K pdtPROT: 0.5640522875816993
+K sdtPROT: 0.845949535192563
+K sdtKNN: 0.8257676902536716
+
+######
+
+>> LEAF <<
+
+ROUND 0
+cvGlobalK (10-fold) [10, 68.8235294117647]
+regularKnn [4, 68.14159292035397]
+prototypeKnn (cnn, globalK) [3, 61.94690265486725]
+localKnn + cnnProts =  68.14159292035397 # AVG K Value: 3
+localKnn + fullTrainingSet =  75.22123893805309 # AVG K Value: 3
+
+K pdtKNN: 0.6688105511682814
+K pdtPROT: 0.6050877763328998
+K sdtPROT: 0.6692145064238088
+K sdtKNN: 0.7420511984346975
+
+######
+
+ROUND 1
+cvGlobalK (10-fold) [10, 68.52941176470588]
+regularKnn [3, 57.52212389380531]
+prototypeKnn (cnn, globalK) [7, 54.86725663716814]
+localKnn + cnnProts =  65.48672566371681 # AVG K Value: 2
+localKnn + fullTrainingSet =  67.2566371681416 # AVG K Value: 1
+
+K pdtKNN: 0.5597402597402598
+K pdtPROT: 0.5337001375515817
+K sdtPROT: 0.6424050632911392
+K sdtKNN: 0.6608808500283884
+
+######
+
+ROUND 2
+cvGlobalK (10-fold) [7, 68.23529411764704]
+regularKnn [5, 64.60176991150442]
+prototypeKnn (cnn, globalK) [9, 62.83185840707964]
+localKnn + cnnProts =  72.56637168141593 # AVG K Value: 2
+localKnn + fullTrainingSet =  73.45132743362832 # AVG K Value: 2
+
+K pdtKNN: 0.6331764323973381
+K pdtPROT: 0.615272373540856
+K sdtPROT: 0.7156655844155845
+K sdtKNN: 0.7248823242980036
+
+######
+
+ROUND 3
+cvGlobalK (10-fold) [10, 67.64705882352942]
+regularKnn [8, 61.94690265486725]
+prototypeKnn (cnn, globalK) [3, 61.94690265486725]
+localKnn + cnnProts =  71.68141592920354 # AVG K Value: 5
+localKnn + fullTrainingSet =  73.45132743362832 # AVG K Value: 4
+
+K pdtKNN: 0.606144119315879
+K pdtPROT: 0.6044448062520351
+K sdtPROT: 0.7056812632264367
+K sdtKNN: 0.7243454220198406
+
+######
+
+ROUND 4
+cvGlobalK (10-fold) [10, 65.88235294117648]
+regularKnn [3, 59.29203539823009]
+prototypeKnn (cnn, globalK) [10, 52.21238938053098]
+localKnn + cnnProts =  60.17699115044248 # AVG K Value: 2
+localKnn + fullTrainingSet =  69.91150442477876 # AVG K Value: 1
+
+K pdtKNN: 0.5783240042183825
+K pdtPROT: 0.5054303776949263
+K sdtPROT: 0.5874239350912779
+K sdtKNN: 0.6882758620689655
+
+######
+
+>> ECOLI <<
+
+ROUND 0
+cvGlobalK (10-fold) [1, 80.97147950089126]
+regularKnn [1, 81.08108108108108]
+prototypeKnn (cnn, globalK) [1, 74.77477477477478]
+localKnn + cnnProts =  87.38738738738738 # AVG K Value: 8
+localKnn + fullTrainingSet =  88.28828828828829 # AVG K Value: 9
+
+K pdtKNN: 0.734540485138367
+K pdtPROT: 0.6454887646857534
+K sdtPROT: 0.8215843857634901
+K sdtKNN: 0.8352551661148534
+
+######
+
+ROUND 1
+cvGlobalK (10-fold) [1, 80.11787706284859]
+regularKnn [1, 80.18018018018019]
+prototypeKnn (cnn, globalK) [1, 71.17117117117117]
+localKnn + cnnProts =  86.48648648648648 # AVG K Value: 8
+localKnn + fullTrainingSet =  86.48648648648648 # AVG K Value: 8
+
+K pdtKNN: 0.7334061135371179
+K pdtPROT: 0.6151262325279011
+K sdtPROT: 0.815369261477046
+K sdtKNN: 0.8162454475223486
+
+######
+
+ROUND 2
+cvGlobalK (10-fold) [1, 81.31372549019608]
+regularKnn [1, 77.47747747747748]
+prototypeKnn (cnn, globalK) [1, 73.87387387387388]
+localKnn + cnnProts =  83.78378378378379 # AVG K Value: 8
+localKnn + fullTrainingSet =  81.98198198198197 # AVG K Value: 8
+
+K pdtKNN: 0.6918036428254108
+K pdtPROT: 0.6438765350149354
+K sdtPROT: 0.7776046304541409
+K sdtKNN: 0.7515944947969116
+
+######
+
+ROUND 3
+cvGlobalK (10-fold) [1, 80.87574032545571]
+regularKnn [1, 75.67567567567568]
+prototypeKnn (cnn, globalK) [1, 73.87387387387388]
+localKnn + cnnProts =  89.1891891891892 # AVG K Value: 9
+localKnn + fullTrainingSet =  87.38738738738738 # AVG K Value: 9
+
+K pdtKNN: 0.6493506493506495
+K pdtPROT: 0.6256976744186047
+K sdtPROT: 0.8393438668435653
+K sdtKNN: 0.8130863603560259
+
+######
+
+ROUND 4
+cvGlobalK (10-fold) [1, 80.97426470588235]
+regularKnn [1, 78.37837837837837]
+prototypeKnn (cnn, globalK) [1, 74.77477477477478]
+localKnn + cnnProts =  90.09009009009009 # AVG K Value: 8
+localKnn + fullTrainingSet =  90.09009009009009 # AVG K Value: 8
+
+K pdtKNN: 0.6899802164552542
+K pdtPROT: 0.6433734939759036
+K sdtPROT: 0.8551944971537002
+K sdtKNN: 0.8543307086614171
+
+######
+
+>> HABERMAN <<
+
+ROUND 0
+cvGlobalK (10-fold) [1, 64.6496106785317]
+regularKnn [1, 58.415841584158414]
+prototypeKnn (cnn, globalK) [3, 52.475247524752476]
+localKnn + cnnProts =  64.35643564356435 # AVG K Value: 7
+localKnn + fullTrainingSet =  67.32673267326733 # AVG K Value: 7
+
+K pdtKNN: 0.02661771454795771
+K pdtPROT: -0.08992805755395676
+K sdtPROT: 0.1297271421732887
+K sdtKNN: 0.21075065119583247
+
+######
+
+ROUND 1
+cvGlobalK (10-fold) [2, 67.02457757296467]
+regularKnn [3, 60.396039603960396]
+prototypeKnn (cnn, globalK) [3, 57.42574257425742]
+localKnn + cnnProts =  67.32673267326733 # AVG K Value: 6
+localKnn + fullTrainingSet =  68.31683168316832 # AVG K Value: 6
+
+K pdtKNN: -0.027466937945066296
+K pdtPROT: -0.04979453710418198
+K sdtPROT: 0.17805178791615298
+K sdtKNN: 0.1605194805194806
+
+######
+
+ROUND 2
+cvGlobalK (10-fold) [1, 64.857910906298]
+regularKnn [1, 65.34653465346535]
+prototypeKnn (cnn, globalK) [1, 56.43564356435643]
+localKnn + cnnProts =  69.3069306930693 # AVG K Value: 5
+localKnn + fullTrainingSet =  72.27722772277228 # AVG K Value: 5
+
+K pdtKNN: 0.14551607445008458
+K pdtPROT: 0.04512247529007289
+K sdtPROT: 0.22557506801879781
+K sdtKNN: 0.25735294117647045
+
+######
+
+ROUND 3
+cvGlobalK (10-fold) [2, 65.50776583034647]
+regularKnn [1, 65.34653465346535]
+prototypeKnn (cnn, globalK) [1, 59.4059405940594]
+localKnn + cnnProts =  69.3069306930693 # AVG K Value: 4
+localKnn + fullTrainingSet =  70.29702970297029 # AVG K Value: 3
+
+K pdtKNN: 0.10574247407032643
+K pdtPROT: -0.04755881608904633
+K sdtPROT: 0.12858335652657935
+K sdtKNN: 0.18723175965665229
+
+######
+
+ROUND 4
+cvGlobalK (10-fold) [1, 65.08960573476703]
+regularKnn [3, 61.386138613861384]
+prototypeKnn (cnn, globalK) [2, 58.415841584158414]
+localKnn + cnnProts =  70.29702970297029 # AVG K Value: 8
+localKnn + fullTrainingSet =  66.33663366336634 # AVG K Value: 9
+
+K pdtKNN: 0.00855776491316383
+K pdtPROT: -0.03564453125000002
+K sdtPROT: 0.19585987261146484
+K sdtKNN: 0.12665310274669378
+
+######
+
+>> GLASS << 
+
+ROUND 0
+cvGlobalK (10-fold) [1, 70.44690603514132]
+regularKnn [6, 64.7887323943662]
+prototypeKnn (cnn, globalK) [4, 60.56338028169014]
+localKnn + cnnProts =  74.64788732394366 # AVG K Value: 5
+localKnn + fullTrainingSet =  73.23943661971832 # AVG K Value: 4
+
+K pdtKNN: 0.5142309797482212
+K pdtPROT: 0.43020922900544567
+K sdtPROT: 0.6460814178897812
+K sdtKNN: 0.6293956043956044
+
+######
+
+ROUND 1
+cvGlobalK (10-fold) [1, 68.41421736158578]
+regularKnn [10, 64.7887323943662]
+prototypeKnn (cnn, globalK) [1, 71.83098591549296]
+localKnn + cnnProts =  80.28169014084507 # AVG K Value: 4
+localKnn + fullTrainingSet =  76.05633802816901 # AVG K Value: 4
+
+K pdtKNN: 0.5061213132999444
+K pdtPROT: 0.6120218579234973
+K sdtPROT: 0.725944306589468
+K sdtKNN: 0.6678591084204732
+
+######
+
+ROUND 2
+cvGlobalK (10-fold) [1, 68.51674641148324]
+regularKnn [8, 70.4225352112676]
+prototypeKnn (cnn, globalK) [3, 69.01408450704226]
+localKnn + cnnProts =  76.05633802816901 # AVG K Value: 6
+localKnn + fullTrainingSet =  74.64788732394366 # AVG K Value: 7
+
+K pdtKNN: 0.5893693197466262
+K pdtPROT: 0.5735735735735735
+K sdtPROT: 0.6670344827586207
+K sdtKNN: 0.64822460776218
+
+######
+
+ROUND 3
+cvGlobalK (10-fold) [10, 66.68109668109668]
+regularKnn [1, 66.19718309859155]
+prototypeKnn (cnn, globalK) [1, 59.154929577464785]
+localKnn + cnnProts =  78.87323943661971 # AVG K Value: 5
+localKnn + fullTrainingSet =  76.05633802816901 # AVG K Value: 4
+
+K pdtKNN: 0.5267981116356567
+K pdtPROT: 0.43449601757758854
+K sdtPROT: 0.7007586400674346
+K sdtKNN: 0.6649083842309828
+
+######
+
+ROUND 4
+cvGlobalK (10-fold) [7, 67.04040404040404]
+regularKnn [5, 59.154929577464785]
+prototypeKnn (cnn, globalK) [4, 60.56338028169014]
+localKnn + cnnProts =  74.64788732394366 # AVG K Value: 5
+localKnn + fullTrainingSet =  70.4225352112676 # AVG K Value: 4
+
+K pdtKNN: 0.44605864944847995
+K pdtPROT: 0.46328293736501075
+K sdtPROT: 0.6551538046411225
+K sdtKNN: 0.5981132075471698
+
+######
+
+>> SEEDS << 
+
+ROUND 0
+cvGlobalK (10-fold) [3, 92.38095238095238]
+regularKnn [8, 88.57142857142857]
+prototypeKnn (cnn, globalK) [4, 88.57142857142857]
+localKnn + cnnProts =  94.28571428571428 # AVG K Value: 2
+localKnn + fullTrainingSet =  97.14285714285714 # AVG K Value: 1
+
+K pdtKNN: 0.8272671190623071
+K pdtPROT: 0.8277982779827797
+K sdtPROT: 0.9138991389913899
+K sdtKNN: 0.956816779765577
+
+######
+
+ROUND 1
+cvGlobalK (10-fold) [8, 91.9047619047619]
+regularKnn [1, 94.28571428571428]
+prototypeKnn (cnn, globalK) [1, 88.57142857142857]
+localKnn + cnnProts =  97.14285714285714 # AVG K Value: 2
+localKnn + fullTrainingSet =  98.57142857142858 # AVG K Value: 1
+
+K pdtKNN: 0.9141104294478527
+K pdtPROT: 0.8283261802575107
+K sdtPROT: 0.9571078431372548
+K sdtKNN: 0.9785341919656548
+
+######
+
+ROUND 2
+cvGlobalK (10-fold) [8, 91.42857142857142]
+regularKnn [8, 88.57142857142857]
+prototypeKnn (cnn, globalK) [1, 87.14285714285714]
+localKnn + cnnProts =  92.85714285714286 # AVG K Value: 4
+localKnn + fullTrainingSet =  92.85714285714286 # AVG K Value: 4
+
+K pdtKNN: 0.8286937901498929
+K pdtPROT: 0.8060344827586207
+K sdtPROT: 0.892440073755378
+K sdtKNN: 0.8923408182097816
+
+######
+
+ROUND 3
+cvGlobalK (10-fold) [4, 92.38095238095237]
+regularKnn [1, 85.71428571428571]
+prototypeKnn (cnn, globalK) [5, 87.14285714285714]
+localKnn + cnnProts =  92.85714285714286 # AVG K Value: 5
+localKnn + fullTrainingSet =  90.0 # AVG K Value: 5
+
+K pdtKNN: 0.7833488084184462
+K pdtPROT: 0.8053753475440223
+K sdtPROT: 0.8918751930800124
+K sdtKNN: 0.8485316846986088
+
+######
+
+ROUND 4
+cvGlobalK (10-fold) [1, 92.38095238095237]
+regularKnn [1, 91.42857142857143]
+prototypeKnn (cnn, globalK) [1, 87.14285714285714]
+localKnn + cnnProts =  92.85714285714286 # AVG K Value: 5
+localKnn + fullTrainingSet =  94.28571428571428 # AVG K Value: 4
+
+K pdtKNN: 0.8694841516469857
+K pdtPROT: 0.8031250000000001
+K sdtPROT: 0.8915065096094235
+K sdtKNN: 0.9134199134199134
+
+######
+
+>> SONAR << 
+
+ROUND 0
+cvGlobalK (10-fold) [10, 81.12781954887217]
+regularKnn [10, 79.71014492753623]
+prototypeKnn (cnn, globalK) [7, 65.21739130434783]
+localKnn + cnnProts =  82.6086956521739 # AVG K Value: 3
+localKnn + fullTrainingSet =  88.40579710144928 # AVG K Value: 5
+
+K pdtKNN: 0.5988372093023256
+K pdtPROT: 0.32075471698113206
+K sdtPROT: 0.6547122602168475
+K sdtKNN: 0.7678721614802356
+
+######
+
+ROUND 1
+cvGlobalK (10-fold) [10, 78.796992481203]
+regularKnn [3, 84.05797101449275]
+prototypeKnn (cnn, globalK) [10, 66.66666666666666]
+localKnn + cnnProts =  88.40579710144928 # AVG K Value: 3
+localKnn + fullTrainingSet =  95.65217391304348 # AVG K Value: 2
+
+K pdtKNN: 0.6785260482846251
+K pdtPROT: 0.3312262958280657
+K sdtPROT: 0.7670886075949368
+K sdtKNN: 0.9127686472819216
+
+######
+
+ROUND 2
+cvGlobalK (10-fold) [10, 80.75187969924812]
+regularKnn [6, 75.36231884057972]
+prototypeKnn (cnn, globalK) [8, 62.31884057971014]
+localKnn + cnnProts =  84.05797101449275 # AVG K Value: 3
+localKnn + fullTrainingSet =  89.85507246376811 # AVG K Value: 2
+
+K pdtKNN: 0.4576976421636616
+K pdtPROT: 0.27602905569007263
+K sdtPROT: 0.6675427069645202
+K sdtKNN: 0.7856191744340879
+
+######
+
+ROUND 3
+cvGlobalK (10-fold) [10, 82.75689223057643]
+regularKnn [10, 75.36231884057972]
+prototypeKnn (cnn, globalK) [10, 71.01449275362319]
+localKnn + cnnProts =  84.05797101449275 # AVG K Value: 3
+localKnn + fullTrainingSet =  94.20289855072464 # AVG K Value: 1
+
+K pdtKNN: 0.4967824967824968
+K pdtPROT: 0.36288088642659294
+K sdtPROT: 0.6548431105047748
+K sdtKNN: 0.8810344827586206
+
+######
+
+ROUND 4
+cvGlobalK (10-fold) [8, 81.80952380952381]
+regularKnn [5, 86.95652173913044]
+prototypeKnn (cnn, globalK) [5, 72.46376811594203]
+localKnn + cnnProts =  88.40579710144928 # AVG K Value: 3
+localKnn + fullTrainingSet =  95.65217391304348 # AVG K Value: 2
+
+K pdtKNN: 0.7389659520807061
+K pdtPROT: 0.45031446540880504
+K sdtPROT: 0.7676767676767677
+K sdtKNN: 0.9127686472819216
+
+######
+
+>> PARKINSONS << 
+
+ROUND 0
+cvGlobalK (10-fold) [6, 93.30650154798761]
+regularKnn [7, 84.61538461538461]
+prototypeKnn (cnn, globalK) [9, 81.53846153846153]
+localKnn + cnnProts =  96.92307692307692 # AVG K Value: 1
+localKnn + fullTrainingSet =  93.84615384615384 # AVG K Value: 1
+
+K pdtKNN: 0.5901639344262295
+K pdtPROT: 0.45224719101123584
+K sdtPROT: 0.9232585596221959
+K sdtKNN: 0.851258581235698
+
+######
+
+ROUND 1
+cvGlobalK (10-fold) [6, 92.09868421052632]
+regularKnn [5, 90.76923076923077]
+prototypeKnn (cnn, globalK) [1, 89.23076923076924]
+localKnn + cnnProts =  92.3076923076923 # AVG K Value: 1
+localKnn + fullTrainingSet =  95.38461538461539 # AVG K Value: 1
+
+K pdtKNN: 0.7613219094247246
+K pdtPROT: 0.7158026233603999
+K sdtPROT: 0.7882736156351793
+K sdtKNN: 0.8782011242973143
+
+######
+
+ROUND 2
+cvGlobalK (10-fold) [6, 94.34868421052632]
+regularKnn [1, 89.23076923076924]
+prototypeKnn (cnn, globalK) [5, 83.07692307692308]
+localKnn + cnnProts =  95.38461538461539 # AVG K Value: 3
+localKnn + fullTrainingSet =  96.92307692307692 # AVG K Value: 2
+
+K pdtKNN: 0.6902654867256639
+K pdtPROT: 0.5132743362831861
+K sdtPROT: 0.8421052631578949
+K sdtKNN: 0.9038461538461539
+
+######
+
+ROUND 3
+cvGlobalK (10-fold) [5, 94.5]
+regularKnn [1, 92.3076923076923]
+prototypeKnn (cnn, globalK) [9, 83.07692307692308]
+localKnn + cnnProts =  90.76923076923077 # AVG K Value: 3
+localKnn + fullTrainingSet =  95.38461538461539 # AVG K Value: 1
+
+K pdtKNN: 0.804570054119062
+K pdtPROT: 0.5003494060097835
+K sdtPROT: 0.7430830039525692
+K sdtKNN: 0.8785046728971964
+
+######
+
+ROUND 4
+cvGlobalK (10-fold) [9, 93.8328173374613]
+regularKnn [1, 93.84615384615384]
+prototypeKnn (cnn, globalK) [10, 84.61538461538461]
+localKnn + cnnProts =  98.46153846153847 # AVG K Value: 1
+localKnn + fullTrainingSet =  96.92307692307692 # AVG K Value: 1
+
+K pdtKNN: 0.8555555555555555
+K pdtPROT: 0.5806451612903225
+K sdtPROT: 0.963380281690141
+K sdtKNN: 0.9277777777777778
+
+######
+
+>> WINE << 
+
+ROUND 0
+cvGlobalK (10-fold) [4, 95.0]
+regularKnn [1, 93.22033898305084]
+prototypeKnn (cnn, globalK) [7, 72.88135593220339]
+localKnn + cnnProts =  94.91525423728814 # AVG K Value: 2
+localKnn + fullTrainingSet =  94.91525423728814 # AVG K Value: 9
+
+K pdtKNN: 0.8948306595365418
+K pdtPROT: 0.55260663507109
+K sdtPROT: 0.9195820081781011
+K sdtKNN: 0.9208761734465801
+
+######
+
+ROUND 1
+cvGlobalK (10-fold) [4, 94.37500000000001]
+regularKnn [1, 93.22033898305084]
+prototypeKnn (cnn, globalK) [10, 81.35593220338984]
+localKnn + cnnProts =  94.91525423728814 # AVG K Value: 5
+localKnn + fullTrainingSet =  96.61016949152543 # AVG K Value: 7
+
+K pdtKNN: 0.8980121002592912
+K pdtPROT: 0.7110418521816563
+K sdtPROT: 0.9221293444786628
+K sdtKNN: 0.9487179487179487
+
+######
+
+ROUND 2
+cvGlobalK (10-fold) [1, 95.48611111111111]
+regularKnn [3, 89.83050847457628]
+prototypeKnn (cnn, globalK) [10, 71.1864406779661]
+localKnn + cnnProts =  98.30508474576271 # AVG K Value: 3
+localKnn + fullTrainingSet =  93.22033898305084 # AVG K Value: 3
+
+K pdtKNN: 0.842386464826358
+K pdtPROT: 0.5250946969696969
+K sdtPROT: 0.9726851851851852
+K sdtKNN: 0.894027840143691
+
+######
+
+ROUND 3
+cvGlobalK (10-fold) [1, 95.0]
+regularKnn [1, 94.91525423728814]
+prototypeKnn (cnn, globalK) [10, 33.89830508474576]
+localKnn + cnnProts =  96.61016949152543 # AVG K Value: 3
+localKnn + fullTrainingSet =  96.61016949152543 # AVG K Value: 7
+
+K pdtKNN: 0.9209468512728896
+K pdtPROT: 0.0915909988156336
+K sdtPROT: 0.9479947113265758
+K sdtKNN: 0.9475322365495774
+
+######
+
+ROUND 4
+cvGlobalK (10-fold) [1, 94.86111111111111]
+regularKnn [1, 93.22033898305084]
+prototypeKnn (cnn, globalK) [1, 83.05084745762711]
+localKnn + cnnProts =  98.30508474576271 # AVG K Value: 8
+localKnn + fullTrainingSet =  100.0 # AVG K Value: 10
+
+K pdtKNN: 0.8982758620689655
+K pdtPROT: 0.7439236111111112
+K sdtPROT: 0.9743812418584455
+K sdtKNN: 1.0
+
+######
+
+>> IRIS << 
+
+ROUND 0
+cvGlobalK (10-fold) [9, 94.66666666666667]
+regularKnn [1, 100.0]
+prototypeKnn (cnn, globalK) [9, 88.0]
+localKnn + cnnProts =  100.0 # AVG K Value: 2
+localKnn + fullTrainingSet =  100.0 # AVG K Value: 6
+
+K pdtKNN: 1.0
+K pdtPROT: 0.8192771084337351
+K sdtPROT: 1.0
+K sdtKNN: 1.0
+
+######
+
+ROUND 1
+cvGlobalK (10-fold) [9, 94.66666666666667]
+regularKnn [1, 98.0]
+prototypeKnn (cnn, globalK) [1, 96.0]
+localKnn + cnnProts =  98.0 # AVG K Value: 6
+localKnn + fullTrainingSet =  98.0 # AVG K Value: 6
+
+K pdtKNN: 0.9699157641395908
+K pdtPROT: 0.9399038461538461
+K sdtPROT: 0.9699157641395908
+K sdtKNN: 0.9699157641395908
+
+######
+
+ROUND 2
+cvGlobalK (10-fold) [9, 94.66666666666666]
+regularKnn [1, 96.0]
+prototypeKnn (cnn, globalK) [10, 86.0]
+localKnn + cnnProts =  94.0 # AVG K Value: 3
+localKnn + fullTrainingSet =  96.0 # AVG K Value: 6
+
+K pdtKNN: 0.939540507859734
+K pdtPROT: 0.7889022919179735
+K sdtPROT: 0.9092009685230024
+K sdtKNN: 0.939540507859734
+
+######
+
+ROUND 3
+cvGlobalK (10-fold) [9, 94.66666666666666]
+regularKnn [1, 96.0]
+prototypeKnn (cnn, globalK) [4, 90.0]
+localKnn + cnnProts =  96.0 # AVG K Value: 3
+localKnn + fullTrainingSet =  96.0 # AVG K Value: 6
+
+K pdtKNN: 0.938195302843016
+K pdtPROT: 0.8457742134484886
+K sdtPROT: 0.9382716049382716
+K sdtKNN: 0.938195302843016
+
+######
+
+ROUND 4
+cvGlobalK (10-fold) [3, 94.66666666666667]
+regularKnn [1, 100.0]
+prototypeKnn (cnn, globalK) [10, 96.0]
+localKnn + cnnProts =  100.0 # AVG K Value: 3
+localKnn + fullTrainingSet =  100.0 # AVG K Value: 5
+
+K pdtKNN: 1.0
+K pdtPROT: 0.9397590361445782
+K sdtPROT: 1.0
+K sdtKNN: 1.0
+
+######
+Accuracy
+Kappa
+Average K
