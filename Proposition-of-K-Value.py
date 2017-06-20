@@ -18,30 +18,100 @@
 ## SUMÁRIO ##
 ## Pesquise a [TAG] para pular diretamente para uma parte do código
 
+## 1. SET-UP EXPERIMENTAL
+## 1.1. Imports Necessários [IMPR]
+## 1.2. Datasets Utilizados [DATA]
+## 1.3. Preparação do Dataset [LOAD]
+## 1.4. Preparação dos Folds [FOLD]
+
+## 2. K-NEAREST NEIGHBOR
+## 2.1. Cálculos de Distância [DIST]
+## 2.2. Funções do K-NN padrão [K-NN]
+## 2.3. Geração de Protótipos [PROT]
+## 2.4. Cálculo da Taxa de Acerto [ACCR]
+
+## 3. LOCAL K VALUES
+##
+
 ###############################################################
 
-#[IMPR]
+## 1. SET-UP EXPERIMENTAL
 
-##ORIGINAL IMPORT FOR REGULAR K-NN
+# 1.1. Imports Necessários [IMPR] #
+# Foram se utilizadas as bibliotecas de CSV (para leitura de arquivos), random (para geração
+# de números pseudo-aleatórios), math (para operações de raiz quadrada e potenciação) e
+# operator (para ordenação de listas) nesse trabalho.
+
 import csv
 import random
 import math
 import operator
 
-#CITE DATASETS
+##############
 
-#[LOAD]
+# 1.2. Datasets Utilizados [DATA] #
+# O artigo menciona ter usado vários datasets da database do UCI, mas não especifica quais.
+# Tentei entrar em contato com os autores do arquivo para saber quais bancos de dados foram usados
+# e como eles foram particionados, como sugerido no próprio artigo, mas não consegui resposta e o
+# link fornecido no artigo tinha expirado.
 
-##LOAD(filename) - Receives a filename and reads the corresponding datafile.
+# Com isso, foram-se usados os seguintes Datasets do UCI, em ordem crescente de número de instâncias.
+
+# IRIS - 150 instâncias, 4 atributos (1988)
+# WINE - 178 instâncias, 13 atributos (1991)
+# PARKINSONS - 197 instâncias, 23 atributos (2008)
+# SEEDS - 210 instâncias, 7 atributos (2012)
+# LEAF - 340 instâncias, 16 atributos (2014)
+
+# !!!!! SE DER, PEGAR 1 BANCO À MAIS !!!!! #
+# !!!!! SE DER, PEGAR 5 BANCO À MAIS !!!!! #
+
+##############
+
+# 1.3. Preparação do Dataset [LOAD] #
+# Essa seção contém as funções básicas de leitura, preparação e separação do dataset.
+
+## load(filename)
+## Recebe um nome de arquivo e lê o arquivo correspondente.
+
 def load(filename):
     file  = open(filename, "rt", encoding="utf8")
     fileContent = csv.reader(file)
     dataset = list(fileContent)
     return dataset
 
-#[SPLT]
+#-------------------#
 
-##SPLIT(using this initially)
+## normalize(dataset)
+## Recebe um dataset e normaliza as colunas.
+
+def normalize(dataset):
+    global classCol, idCol
+    for x in range(0, len(dataset[0])):
+        if(x != classCol) and (x != idCol):
+            minval = float(dataset[0][x])
+            maxval = float(dataset[0][x])
+            for y in dataset:
+                if(float(y[x]) < minval): minval = float(y[x])
+                if(float(y[x]) > maxval): maxval = float(y[x])
+            for y in dataset:
+                y[x] = (float(y[x]) - minval)/(maxval - minval)
+    return dataset
+
+#-------------------#
+
+# Observação:
+# O artigo não define como ele particiona os bancos para gerar os protótipos ou para encontrar as instâncias
+# de teste mais próximas à estes.
+
+# As funções splits abaixo foram usadas para gerar bancos de treinamento (que geram os protótipos) e
+# bancos de teste (que serão usados na avaliação). Eles não estão relacionados com o CV de 10-folds usado
+# para calcular os valores de acerto globais para cada 'k'
+
+## split(dataset, ratio)
+## Versão inicial do split - recebe um banco e um fator e distribui instâncias para o banco de treinamento ou
+## teste dependendo de se um valor aleatório for maior ou menor que o fator.
+
 def split(dataset, ratio):
     global classCol, idCol
     
@@ -51,9 +121,11 @@ def split(dataset, ratio):
                 dataset[i][j] = float(dataset[i][j])
         if(random.random() >= ratio): testSet.append(dataset[i])
         else: trainingSet.append(dataset[i])
-
-#[SPLS]
-
+        
+## splitShuffle(dataset, crossover)
+## Versão avançada do split - recebe um banco e um ponto de crossover, dá shuffle no dataset, e divide-o
+## nos bancos de teste e treinamento no ponto do crossover.
+        
 def splitShuffle(dataset, crossover):
     global classCol, idCol
 
@@ -67,9 +139,46 @@ def splitShuffle(dataset, crossover):
     testSet = dataset[splitPoint:]
     return trainingSet, testSet
 
-#[ECLD]
+##############
 
-##EUCLID DISTANCE (gets the distance between two instances ignoring the necessary columns)
+# 1.4. Preparação dos Folds [FOLD] #
+# Essa seção contém a funções básicas que gera os folds para a cross-validation.
+
+## genFolds(dataset, kfold)
+## Recebe um banco de dados e um número de folds e separa o número de folds necessários.
+## Obs: Não permite um fold ter mais de duas instâncias do que qualquer outro.
+
+def genFolds(dataset, kfold):
+    global classCol, idCol
+    sets = []
+    for i in range(0, kfold):
+        sets.append([])
+    maxsize = math.ceil(len(dataset)/kfold)
+    
+    for i in range(0, len(dataset)):
+        for j in range(0, len(dataset[i])):
+            if(j != classCol) and (j != idCol):
+                dataset[i][j] = float(dataset[i][j])
+        num = random.randint(0, ((kfold)-1))
+        while(len(sets[num]) >= maxsize): num = random.randint(0, ((kfold)-1))
+        sets[num].append(dataset[i])
+    return sets
+
+###############################################################
+
+## 2. FUNÇÕES DE K-NN BÁSICO
+
+# 2.1. Cálculo de Distância [DIST] #
+# Essa seção contém funções básicas de cálculo de distância.
+
+# Observação: 
+# O artigo compara seu algoritmo com o K-NN padrão, o K-NN adaptativo e o K-NN simétrico.
+# Para motivos de simplicidade neste trabalho e para foco no algoritmo apresentado, foi-se focado o K-NN padrão.
+# Porém, caso desejado, não é complicado introduzir novas métricas para se comparar com outros algoritmos.
+
+## euclidDist(instanceA, instanceB)
+## Calcula a distância euclideana entre duas instâncias, ignorando colunas de classe e identificação
+
 def euclidDist(instanceA, instanceB):
     global classCol, idCol
     
@@ -79,19 +188,30 @@ def euclidDist(instanceA, instanceB):
 
     return math.sqrt(result)
 
-#[KNN]
+##############
+
+# 2.2. Funções do K-NN Padrão [K-NN] #
+# Essa seção contém as funções básicas para execução do K-NN padrão
+
+## knn(trainingSet, testSet, k)
+## Recebe um banco de treinamento e um banco de teste, e para cada instância do banco de teste, pega os
+## k vizinhos mais próximos, usa eles para calcular a classe prevista, e retorna uma lista dessas classes.
 
 def knn(trainingSet, testSet, k):
     result = []
     for i in range(0, len(testSet)):
-        knn = neighborino(trainingSet, testSet[i], k)
+        knn = neighbor(trainingSet, testSet[i], k)
         knnClass = decision(knn)
         result.append(knnClass)
     return result
 
-#[NBO]
+#-------------------#
 
-def neighborino(trainingSet, testInst, k):
+## neighbor(trainingSet, testInst, k)
+## Recebe um banco de treinamento e uma instância de teste A, e para cada instância B do banco de treinamento,
+## calcula a distância entre A e B. No final, retorna os 'k' vizinhos mais pertos e as distâncias associadas.
+
+def neighbor(trainingSet, testInst, k):
 
     distanceList = []
     for i in range(0, len(trainingSet)):
@@ -103,7 +223,11 @@ def neighborino(trainingSet, testInst, k):
         result.append(distanceList[i][:])
     return result
 
-#[DEC]
+#-------------------#
+
+## decision(knn)
+## Recebe um conjunto de instâncias (os vizinhos mais próximos) e calcula qual a classe mais prevalente.
+## No final, retorna a classe prevista.
 
 def decision(knn):
     global weight, classCol
@@ -135,23 +259,36 @@ def decision(knn):
                 result = knnClass
     return result
 
-#[BMU]
+#-------------------#
 
-def getBMU(dataset, testInst, num):
-    ##Inits values
-    result = []
-    distList = []
-    ##Combs through the dataset
-    for i in dataset:
-        dist = euclidDist(i, testInst)
-        distList.append((i, dist))
-    ##Combs through the distance array to get the smallest value (1-nn)
-    distList.sort(key=operator.itemgetter(1))
-    for d in range(0, num):
-        result.append(distList[d])
-    return result
+## loop(trainingSet, testSet, kMin, kMax)
+## Recebe um banco de treinamento, um banco de teste, e calcula kNN para estes bancos para todos os
+## valores de 'k' entre [kMin, kMax], retornando uma lista de taxas de acerto.
 
-#[CNN]
+def loop(trainingSet, testSet, kMin, kMax):
+    listVals = []
+    for k in range(kMin, (kMax+1)):
+        currVal = successRate(testSet, knn(trainingSet, testSet, k))
+        listVals.append([k, currVal])
+    return listVals
+
+##############
+
+# 2.3. Geração de Protótipos [PROT] #
+# Essa seção contém a função usada para se gerar protótipos.
+
+# Observação: 
+# O artigo não define como os protótipos foram criados.
+# Por isso, foi-se usado uma versão básica do CNN (Condensed Nearest Neighbor)
+
+# Se desejado, outros métodos de geração de protótipos podem ser usados, ou o banco de treinamento inteiro pode
+# ser utilizado para o cálculo dos valores de 'k' locais.
+
+## cnn(trainingSet)
+## Recebe um banco de treinamento T e cria um banco novo S com apenas uma instância. Enquanto S for atualizado,
+## verifique se cada instância de T é classificada corretamente, se não, insira esta instância em S.
+
+## O CNN pode ser usado como ponto de partida na geração de protótipos e podem se usar outros métodos após ele!
 
 def cnn(trainingSet):
     global classCol
@@ -160,18 +297,24 @@ def cnn(trainingSet):
     while prevResult != result:
         prevResult = result
         for inst in trainingSet:
-            bmus = neighborino(result, inst, 1)
+            bmus = neighbor(result, inst, 1)
             if(inst[classCol] != decision(bmus)):
                 result.append(inst)
         for inst in trainingSet:
-            bmus = neighborino(result, inst, 1)
+            bmus = neighbor(result, inst, 1)
             if(inst[classCol] != decision(bmus)):
                 result.append(inst)
     return result
 
-#[ACC]
+##############
 
-##SUCCESSRATE (currently without 10-fold, calculates success rate)
+# 2.4. Cálculo da Taxa de Acerto [ACCR] #
+# Essa seção contém a função usada para calcular a taxa de acerto de um algoritmo.
+
+## successRate(testSet, knnSet)
+## Recebe um banco de teste e uma lista de classes previstas. Para cada instância de teste T, verifica s
+## a classe prevista é igual à classe da instância, e calcula a taxa de acerto em porcentagem.
+
 def successRate(testSet, knnSet):
     global classCol
     result = 0
@@ -181,43 +324,20 @@ def successRate(testSet, knnSet):
     result = result/float(len(testSet))*100
     return result
 
-#[NORM]
+###############################################################
 
-def normalize(dataset):
-    global classCol, idCol
-    for x in range(0, len(dataset[0])):
-        if(x != classCol) and (x != idCol):
-            minval = float(dataset[0][x])
-            maxval = float(dataset[0][x])
-            for y in dataset:
-                if(float(y[x]) < minval): minval = float(y[x])
-                if(float(y[x]) > maxval): maxval = float(y[x])
-            for y in dataset:
-                y[x] = (float(y[x]) - minval)/(maxval - minval)
-    return dataset
+## 3. CÁLCULO DO MELHOR K LOCAL
 
-#[CVG]
-    
-##CURR WITHOUT 10-CV (NEED TO ADD)
-def genFolds(dataset, kfold):
-    global classCol, idCol
-    sets = []
-    for i in range(0, kfold):
-        sets.append([])
-    maxsize = math.ceil(len(dataset)/kfold)
-    
-    for i in range(0, len(dataset)):
-        for j in range(0, len(dataset[i])):
-            if(j != classCol) and (j != idCol):
-                dataset[i][j] = float(dataset[i][j])
-        num = random.randint(0, ((kfold)-1))
-        while(len(sets[num]) >= maxsize): num = random.randint(0, ((kfold)-1))
-        sets[num].append(dataset[i])
-    ##print(sets)
-    ##input()
-    return sets
+# 3.1. K GLOBAIS [KGLO]
+# Essa seção contém a função que calcula a accuracy dos valores globais para cada k.
+# Estes valores serão utilizados para ajudar no cálculo dos valores locais.
 
-#[CVE]
+## execFolds(folds, kfold, kMin, kMax)
+## Recebe um conjunto de folds (gerados anteriormente), um número de folds e um range [kMin, kMax],
+## e executa os folds para todos os valores de k dentro dos limites definidos.
+
+## A função então retorna uma lista com todos os valores de 'k' e as taxas de acerto médias
+## calculadas na execução do K-NN para cada fold.
 
 def execFolds(folds, kfold, kMin, kMax):
     listVals = []
@@ -239,19 +359,14 @@ def execFolds(folds, kfold, kMin, kMax):
     ##input()
     return listVals
 
-#[PRINT]
+##############
 
-def printResults(trainingSet, testSet, k):
-    print("Success Rate for %d Neighbors: %.4f" %(k,successRate(testSet, knn(trainingSet, testSet, k))))
+# 3.2. CÁLCULO DO K LOCAL [KLOC]
+# Essa seção contém as funções usadas para calcular o valor local de k associado à cada protótipo.
 
-#[BASE]
 
-def loop(trainingSet, testSet, kMin, kMax):
-    listVals = []
-    for k in range(kMin, (kMax+1)):
-        currVal = successRate(testSet, knn(trainingSet, testSet, k))
-        listVals.append([k, currVal])
-    return listVals
+
+
 
 #[LKTR] - LOCAL-KNN (TRAINING) - BETTER VERSION
 
@@ -262,7 +377,7 @@ def betLocalF(prototypes, testSet, kMin, kMax):
     retProt = []
     
     for inst in thisTest:
-        bmus = neighborino(thisProt, inst, 3)
+        bmus = neighbor(thisProt, inst, 3)
         testProt.append([bmus[0][0],bmus[1][0],bmus[2][0]])
 
     for prot in thisProt:
@@ -298,7 +413,7 @@ def localF(prototypes, testSet, kMin, kMax):
         for inst in testSet:
             ##DE ALGUM JEITO ESTÁ INSERINDO INSTÂNCIAS EM TESTE?
             ##DEPOIS DE UNS LOOPS ELE APARECE COM O PROTÓTIPO
-            bmus = neighborino(prototypes, inst, 3)
+            bmus = neighbor(prototypes, inst, 3)
             if(bmus[0][0] == prototype or bmus[1][0] == prototype or bmus[2][0]):
                 protSet.append(inst)
         listVals = []
@@ -316,23 +431,28 @@ def localF(prototypes, testSet, kMin, kMax):
 def knnlocal(prototypes, testSet):
     result = []
     for inst in testSet:
-        bmus = neighborino(prototypes, inst, 1)
+        bmus = neighbor(prototypes, inst, 1)
         k = bmus[0][0][-1]
-        bmus = neighborino(prototypes, inst, k)
+        bmus = neighbor(prototypes, inst, k)
         currResult = decision(bmus)
         result.append(currResult)
     rate = successRate(testSet, result)
     return rate
 
+###############################################################
 
-#filename = input("Please input your file name (without the .csv extension) >> ")
-#filename += ".csv"
-#weight = input("Type 'y' for weighted K-NN >> ")
-#local = input("Type 'y' for local K-NN >> ")
-#classCol = (int(input("What column of your dataset contains the expected result? >> ")) - 1)
-#idCol = (int(input("Type the identification column, if any (-999 if none) >> ")) - 1)
+## 4. FUNÇÕES ADICIONAIS [ADDF]
+# Essa seção contém funções adicionais usadas ao longo do projeto. 
 
-#[MAIN]
+## printResults(trainingSet, testSet, k)
+## Recebe um banco de treinamento, um banco de teste, e calcula a taxa de acerto do k-NN para os bancos
+
+def printResults(trainingSet, testSet, k):
+    print("Success Rate for %d Neighbors: %.4f" %(k,successRate(testSet, knn(trainingSet, testSet, k))))
+
+###############################################################
+
+#[MAIN] HAHAHAHAHAHAH
 
 for abc in range(0,5):
     print("ROUND",abc)
@@ -390,4 +510,4 @@ print("###")
 #Outros KNN básicos?
     #SEGUINDO O ARQUIVO
 #COMB THROUGH EVERYTHING AND HIGHLIGHT ARTICLE PERFORMANCE
-
+#CREATE MAIN AND GLOBAL VARS
