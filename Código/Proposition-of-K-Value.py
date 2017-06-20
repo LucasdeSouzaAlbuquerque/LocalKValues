@@ -462,10 +462,9 @@ for round in range(0,5):
     print("ROUND",round)
 
     ## Informações do dataset
-    filename = "iris.csv"
-    print(filename)
+    filename = "seeds.csv"
     weight = local = "y"
-    classCol = 4
+    classCol = 7
     idCol = -999
 
     ## Carrega o banco de dados e normaliza.
@@ -494,6 +493,8 @@ for round in range(0,5):
     ## (Isso gerarão duas taxas de acerto diferente)
     prots1 = localF(prototypes[:],testSet[:],1,10)
     prots2 = localF(trainingSet[:],testSet[:],1,10)
+    #prots1 = localF(prototypes[:],trainingSet[:],1,10)
+    #prots2 = localF(trainingSet[:],trainingSet[:],1,10)
     rate1, avg1, sdtPROT = knnlocal(prots1[:], testSet[:])
     rate2, avg2, sdtKNN = knnlocal(prots2[:], testSet[:])
 
