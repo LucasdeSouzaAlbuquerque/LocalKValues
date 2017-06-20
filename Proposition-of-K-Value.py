@@ -71,7 +71,6 @@ import cohen
 # GLASS - 214 instâncias, 10 atributos (1987) - Class: 10 - Id: 0
 # HABERMAN - 306 instâncias, 3 atributos (1999) - Class: 3 - Id: -999
 # ECOLI - 336 instâncias, 8 atributos (1996) - Class: 8 - Id: 0
-    # READING AS FLOAT!!
 # LEAF - 340 instâncias, 16 atributos (2014) - Class: 0 - Id: 1
 # IONOSPHERE - 351 instâncias, 34 atributos (1989) - Class: 34 - Id: -999
     
