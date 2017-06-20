@@ -105,7 +105,8 @@ def normalize(dataset):
                 if(float(y[x]) < minval): minval = float(y[x])
                 if(float(y[x]) > maxval): maxval = float(y[x])
             for y in dataset:
-                y[x] = (float(y[x]) - minval)/(maxval - minval)
+                if(minval == 0) and (maxval == 0): y[x] = 0
+                else: y[x] = (float(y[x]) - minval)/(maxval - minval)
     return dataset
 
 #-------------------#
@@ -463,9 +464,9 @@ for round in range(0,5):
     print("ROUND",round)
 
     ## Informações do dataset
-    filename = "sonar.csv"
+    filename = "ionosphere.csv"
     weight = local = "y"
-    classCol = 60
+    classCol = 34
     idCol = -999
 
     ## Carrega o banco de dados e normaliza.
