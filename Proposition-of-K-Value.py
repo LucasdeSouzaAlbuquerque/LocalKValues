@@ -51,6 +51,7 @@ import csv
 import random
 import math
 import operator
+import cohen
 
 ##############
 
@@ -272,10 +273,13 @@ def decision(knn):
 
 def loop(trainingSet, testSet, kMin, kMax):
     listVals = []
+    knnSets = {}
     for k in range(kMin, (kMax+1)):
-        currVal = successRate(testSet, knn(trainingSet, testSet, k))
+        knnSet = knn(trainingSet, testSet, k)
+        currVal = successRate(testSet, knnSet)
         listVals.append([k, currVal])
-    return listVals
+        knnSets[k] = knnSet
+    return listVals, knnSets
 
 ##############
 
@@ -433,7 +437,7 @@ def knnlocal(prototypes, testSet):
         result.append(currResult)
     avgK = totalK/(len(testSet))
     rate = successRate(testSet, result)
-    return rate, avgK
+    return rate, avgK, result
 
 ###############################################################
 
@@ -466,6 +470,12 @@ for round in range(0,5):
     dataset = load(filename)
     datasetNorm = normalize(dataset[:])
 
+    ## Pega todas as possiveis classes
+    labels = []
+    for i in datasetNorm:
+        if not (i[classCol] in labels):
+            labels.append(i[classCol])
+
     ## Gera os bancos de treinamento, teste, os protótipos e os folds para CV.
     trainingSet, testSet = splitShuffle(datasetNorm[:], 0.67)
     prototypes = cnn(trainingSet[:])
@@ -473,15 +483,15 @@ for round in range(0,5):
 
     ## Executa K-NN padrão com 10-Fold CV, o banco de treinamento inteiro e os protótipos.
     cvGlobalK = execFolds(folds[:],10,1,10)
-    regularKnn = loop(trainingSet[:],testSet[:],1,10)
-    protKnn = loop(prototypes[:],testSet[:],1,10)
+    regularKnn, pdtL1 = loop(trainingSet[:],testSet[:],1,10)
+    protKnn, pdtL2 = loop(prototypes[:],testSet[:],1,10)
 
     ## Calcula os valores locais para cada k com os protótipos e banco de treinamento inteiro
     ## (Isso gerarão duas taxas de acerto diferente)
     prots1 = localF(prototypes[:],testSet[:],1,10)
     prots2 = localF(trainingSet[:],testSet[:],1,10)
-    rate1, avg1 = knnlocal(prots1[:], testSet[:])
-    rate2, avg2 = knnlocal(prots2[:], testSet[:])
+    rate1, avg1, sdtPROT = knnlocal(prots1[:], testSet[:])
+    rate2, avg2, sdtKNN = knnlocal(prots2[:], testSet[:])
 
     ## Para os K-NN padrão, imprime o melhor 'K' e a taxa de acerto associada, para os K-NN com
     ## valores locais, imprime a taxa de acerto e o valor médio dos 'K' conseguido dos protótipos.
@@ -494,8 +504,24 @@ for round in range(0,5):
     print("localKnn + cnnProts = ", rate1, "# AVG K Value:", int(avg1))
     print("localKnn + fullTrainingSet = ", rate2, "# AVG K Value:", int(avg2))
     print("")
+
+    ## Pega classes de resultado
+    classRes = []
+    for i in testSet:
+        classRes.append(i[classCol])
+
+    ## Imprime COHEN
+    pdtKNN = pdtL1[regularKnn[0][0]]
+    pdtPROT = pdtL2[protKnn[0][0]]
+    print("K pdtKNN:",cohen.computeKappa(pdtKNN, classRes, labels))
+    print("K pdtPROT:",cohen.computeKappa(pdtPROT, classRes, labels))
+    print("K sdtPROT:",cohen.computeKappa(sdtPROT, classRes, labels))
+    print("K sdtKNN:",cohen.computeKappa(sdtKNN, classRes, labels))
+    input()
+    
 print("###")
 
+###############################################################
+
 # Conseguir mais datasets
-# Modos de comparação de resultados?
 # Gerar relatório e apresentação
