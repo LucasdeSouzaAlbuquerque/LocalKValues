@@ -74,7 +74,6 @@ import cohen
     # READING AS FLOAT!!
 # LEAF - 340 instâncias, 16 atributos (2014) - Class: 0 - Id: 1
 # IONOSPHERE - 351 instâncias, 34 atributos (1989) - Class: 34 - Id: -999
-    # DIVISION BY ZERO!!
     
 ##############
 
@@ -464,10 +463,10 @@ for round in range(0,5):
     print("ROUND",round)
 
     ## Informações do dataset
-    filename = "ionosphere.csv"
+    filename = "ecoli.csv"
     weight = local = "y"
-    classCol = 34
-    idCol = -999
+    classCol = 8
+    idCol = 0
 
     ## Carrega o banco de dados e normaliza.
     trainingSet = []
