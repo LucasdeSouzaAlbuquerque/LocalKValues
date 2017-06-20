@@ -491,8 +491,8 @@ for round in range(0,5):
     print("cvGlobalK (10-fold)", cvGlobalK[0])
     print("regularKnn", regularKnn[0])
     print("prototypeKnn (cnn, globalK)", protKnn[0])
-    print("localKnn + cnnProts = ", rate1, "# K Value:", avg1)
-    print("localKnn + fullTrainingSet = ", rate2, "# K Value:", avg2)
+    print("localKnn + cnnProts = ", rate1, "# AVG K Value:", int(avg1))
+    print("localKnn + fullTrainingSet = ", rate2, "# AVG K Value:", int(avg2))
     print("")
 print("###")
 
