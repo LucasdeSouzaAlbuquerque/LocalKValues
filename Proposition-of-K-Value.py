@@ -63,15 +63,19 @@ import cohen
 
 # Com isso, foram-se usados os seguintes Datasets do UCI, em ordem crescente de número de instâncias.
 
-# IRIS - 150 instâncias, 4 atributos (1988)
-# WINE - 178 instâncias, 13 atributos (1991)
-# PARKINSONS - 197 instâncias, 23 atributos (2008)
-# SEEDS - 210 instâncias, 7 atributos (2012)
-# LEAF - 340 instâncias, 16 atributos (2014)
-
-# !!!!! SE DER, PEGAR 1 BANCO À MAIS !!!!! #
-# !!!!! SE DER, PEGAR 5 BANCO À MAIS !!!!! #
-
+# IRIS - 150 instâncias, 4 atributos (1988) - Class: 4 - Id: -999
+# WINE - 178 instâncias, 13 atributos (1991) - Class: 0 - Id: -999
+# PARKINSONS - 197 instâncias, 23 atributos (2008) - Class: 17 - Id: 0
+# SONAR - 208 instâncias, 60 atributos - Class: 60 - Id: -999
+# SEEDS - 210 instâncias, 7 atributos (2012) - Class: 7 - Id: -999
+# GLASS - 214 instâncias, 10 atributos (1987) - Class: 10 - Id: 0
+# HABERMAN - 306 instâncias, 3 atributos (1999) - Class: 3 - Id: -999
+# ECOLI - 336 instâncias, 8 atributos (1996) - Class: 8 - Id: 0
+    # READING AS FLOAT!!
+# LEAF - 340 instâncias, 16 atributos (2014) - Class: 0 - Id: 1
+# IONOSPHERE - 351 instâncias, 34 atributos (1989) - Class: 34 - Id: -999
+    # DIVISION BY ZERO!!
+    
 ##############
 
 # 1.3. Preparação do Dataset [LOAD] #
@@ -459,9 +463,9 @@ for round in range(0,5):
     print("ROUND",round)
 
     ## Informações do dataset
-    filename = "seeds.csv"
+    filename = "sonar.csv"
     weight = local = "y"
-    classCol = 7
+    classCol = 60
     idCol = -999
 
     ## Carrega o banco de dados e normaliza.
@@ -517,11 +521,12 @@ for round in range(0,5):
     print("K pdtPROT:",cohen.computeKappa(pdtPROT, classRes, labels))
     print("K sdtPROT:",cohen.computeKappa(sdtPROT, classRes, labels))
     print("K sdtKNN:",cohen.computeKappa(sdtKNN, classRes, labels))
-    input()
     
 print("###")
 
 ###############################################################
 
-# Conseguir mais datasets
-# Gerar relatório e apresentação
+# RELATÓRIO
+### DIAGRAMA DE ALGORITMO
+### TABELA DE DATASETS
+### RESULTADOS
