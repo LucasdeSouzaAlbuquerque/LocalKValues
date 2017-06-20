@@ -30,8 +30,13 @@
 ## 2.3. Geração de Protótipos [PROT]
 ## 2.4. Cálculo da Taxa de Acerto [ACCR]
 
-## 3. LOCAL K VALUES
-##
+## 3. CÁLCULO DO MELHOR K LOCAL
+## 3.1. K GLOBAIS [KGLO]
+## 3.2. K LOCAIS [KLOC]
+
+## 4. FUNÇÕES ADICIONAIS [ADDF]
+
+## 5. MAIN [MAIN]
 
 ###############################################################
 
@@ -328,7 +333,7 @@ def successRate(testSet, knnSet):
 
 ## 3. CÁLCULO DO MELHOR K LOCAL
 
-# 3.1. K GLOBAIS [KGLO]
+# 3.1. K GLOBAIS [KGLO] #
 # Essa seção contém a função que calcula a accuracy dos valores globais para cada k.
 # Estes valores serão utilizados para ajudar no cálculo dos valores locais.
 
@@ -361,16 +366,21 @@ def execFolds(folds, kfold, kMin, kMax):
 
 ##############
 
-# 3.2. CÁLCULO DO K LOCAL [KLOC]
+# 3.2. K LOCAIS [KLOC] #
 # Essa seção contém as funções usadas para calcular o valor local de k associado à cada protótipo.
 
+## localF(prototypes, testSet, kMin, kMax)
+## Recebe um conjunto de protótipos e um banco de treinamento. Para cada instância T do banco de treinamento,
+## gera uma lista dos três protótipos mais próximos. Então, cada protótipo cria um subconjunto do banco de teste
+## contendo apenas as instâncias T que tem ele como um dos três vizinhos mais próximos.
 
+## Se o conjunto for vazio, o protótipo é descartado: caso contrário, se calcula o K-NN sobre o subconjunto de
+## teste e o conjunto de protótipos para todos os valores 'k' entre [kMin, kMax], e associa o protótipo ao
+## valor 'k' com maior taxa de acerto.
 
+## A função retorna os protótipos atualizados.
 
-
-#[LKTR] - LOCAL-KNN (TRAINING) - BETTER VERSION
-
-def betLocalF(prototypes, testSet, kMin, kMax):
+def localF(prototypes, testSet, kMin, kMax):
     thisTest = testSet[:]
     thisProt = prototypes[:]
     testProt = []
@@ -404,44 +414,30 @@ def betLocalF(prototypes, testSet, kMin, kMax):
 
     return retProt
 
-#[LKTR] - LOCAL-KNN (TRAINING)
-    
-def localF(prototypes, testSet, kMin, kMax):
+#-------------------#
 
-    for prototype in prototypes:
-        protSet = []
-        for inst in testSet:
-            ##DE ALGUM JEITO ESTÁ INSERINDO INSTÂNCIAS EM TESTE?
-            ##DEPOIS DE UNS LOOPS ELE APARECE COM O PROTÓTIPO
-            bmus = neighbor(prototypes, inst, 3)
-            if(bmus[0][0] == prototype or bmus[1][0] == prototype or bmus[2][0]):
-                protSet.append(inst)
-        listVals = []
-        for k in range(kMin, (kMax+1)):
-            currVal = successRate(protSet, knn(prototypes, protSet, k))
-            listVals.append([k, currVal])
-            currPos = k-kMin
-            listVals[currPos][1] = listVals[currPos][1] + cvGlobalK[currPos][1]
-        listVals.sort(key=operator.itemgetter(1))
-        prototype.append(listVals[0][0])
-    return prototypes
-
-#[LKTE] - LOCAL-KNN (TEST)
+## knnLocal(prototypes, testSet)
+## Recebe um conjunto de protótipos e um conjunto de teste, e para cada instância T do banco de teste,
+## pega o protótipo mais próxima da instância, e calcula o k-NN baseado no 'k' encontrado no protótipo.
+## No final, retorna a taxa de acerto.
 
 def knnlocal(prototypes, testSet):
     result = []
+    totalK = 0
     for inst in testSet:
         bmus = neighbor(prototypes, inst, 1)
         k = bmus[0][0][-1]
+        totalK += k
         bmus = neighbor(prototypes, inst, k)
         currResult = decision(bmus)
         result.append(currResult)
+    avgK = totalK/(len(testSet))
     rate = successRate(testSet, result)
-    return rate
+    return rate, avgK
 
 ###############################################################
 
-## 4. FUNÇÕES ADICIONAIS [ADDF]
+## 4. FUNÇÕES ADICIONAIS [ADDF] #
 # Essa seção contém funções adicionais usadas ao longo do projeto. 
 
 ## printResults(trainingSet, testSet, k)
@@ -452,62 +448,54 @@ def printResults(trainingSet, testSet, k):
 
 ###############################################################
 
-#[MAIN] HAHAHAHAHAHAH
+## 5. MAIN [MAIN]
+## Essa seção contém o main do projeto
 
-for abc in range(0,5):
-    print("ROUND",abc)
+for round in range(0,5):
+    print("ROUND",round)
+
+    ## Informações do dataset
     filename = "seeds.csv"
     weight = local = "y"
     classCol = 7
     idCol = -999
 
+    ## Carrega o banco de dados e normaliza.
     trainingSet = []
     testSet = []
     dataset = load(filename)
     datasetNorm = normalize(dataset[:])
+
+    ## Gera os bancos de treinamento, teste, os protótipos e os folds para CV.
     trainingSet, testSet = splitShuffle(datasetNorm[:], 0.67)
-    #split(datasetNorm, 0.67)
     prototypes = cnn(trainingSet[:])
-    ##prototypes = cnn(datasetNorm)
     folds = genFolds(datasetNorm[:], 10)
 
-    #prototypes = rnn(prototypes, trainingSet)
-    #print(prototypes)
-
+    ## Executa K-NN padrão com 10-Fold CV, o banco de treinamento inteiro e os protótipos.
     cvGlobalK = execFolds(folds[:],10,1,10)
     regularKnn = loop(trainingSet[:],testSet[:],1,10)
     protKnn = loop(prototypes[:],testSet[:],1,10)
 
-    oldProts = betLocalF(prototypes[:],testSet[:],1,10)
-    newProts = betLocalF(trainingSet[:],testSet[:],1,10)
-    rate1 = knnlocal(oldProts[:], testSet[:])
-    rate2 = knnlocal(newProts[:], testSet[:])
+    ## Calcula os valores locais para cada k com os protótipos e banco de treinamento inteiro
+    ## (Isso gerarão duas taxas de acerto diferente)
+    prots1 = localF(prototypes[:],testSet[:],1,10)
+    prots2 = localF(trainingSet[:],testSet[:],1,10)
+    rate1, avg1 = knnlocal(prots1[:], testSet[:])
+    rate2, avg2 = knnlocal(prots2[:], testSet[:])
 
+    ## Para os K-NN padrão, imprime o melhor 'K' e a taxa de acerto associada, para os K-NN com
+    ## valores locais, imprime a taxa de acerto e o valor médio dos 'K' conseguido dos protótipos.
     cvGlobalK.sort(key=operator.itemgetter(1))
     regularKnn.sort(key=operator.itemgetter(1))
     protKnn.sort(key=operator.itemgetter(1))
     print("cvGlobalK (10-fold)", cvGlobalK[0])
     print("regularKnn", regularKnn[0])
     print("prototypeKnn (cnn, globalK)", protKnn[0])
-    print("localKnn + cnnProts = ", rate1)
-    print("localKnn + fullTrainingSet = ", rate2)
+    print("localKnn + cnnProts = ", rate1, "# K Value:", avg1)
+    print("localKnn + fullTrainingSet = ", rate2, "# K Value:", avg2)
     print("")
 print("###")
 
-
-
-
-#Modificar LocalK (criação de sets) - PRIORIDADE PRA VENTOLOCIDADE
-    #CHECK
-#Cuidar de problemas de referência
-    #ACHOQCHECKHU3
-#Outros modos de prototipagem?
-    #PROX PRIORIDADE
-#Outros modos de split/cross-validation?
-    #ACHO NÃO NECESSÁRIO
-#Outros modos de comparação? (curva Roc/cohen/wilcoxon)
-    #SEGUINDO O ARQUIVO
-#Outros KNN básicos?
-    #SEGUINDO O ARQUIVO
-#COMB THROUGH EVERYTHING AND HIGHLIGHT ARTICLE PERFORMANCE
-#CREATE MAIN AND GLOBAL VARS
+# Conseguir mais datasets
+# Modos de comparação de resultados?
+# Gerar relatório e apresentação
